@@ -1,5 +1,9 @@
 import React from 'react';
 
+export const metadata = {
+  title: "Dragon News - About us",
+};
+
 const AboutUsPage = () => {
     return (
         <div className=' container mx-auto'>

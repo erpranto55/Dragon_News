@@ -22,7 +22,7 @@ const highlights = [
 const BreakingNews = () => {
     return (
         <div className=' container mx-auto flex justify-between gap-4 items-center bg-gray-200 py-4 px-2'>
-            <button className='btn bg-red-400 text-white'>Latest News</button>
+            <button className='btn bg-red-600 text-white'>Latest News</button>
             <Marquee pauseOnHover={true} speed={100}>
                 {
                     highlights.map(n=>(

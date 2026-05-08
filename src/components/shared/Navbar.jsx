@@ -20,9 +20,9 @@ const Navbar = () => {
                 </li>
             </ul>
 
-            <div className='flex items-center gap-2'>
-                <Image src={userAvatar} alt='User Avatar' width={60} height={60} />
-                <button className='btn bg-[#403F3F] text-white'>
+            <div className='flex items-center gap-4'>
+                <Image src={userAvatar} alt='User Avatar' width={40} height={40} />
+                <button className='btn text-white bg-purple-500 hover:bg-purple-700'>
                     <Link href={"/login"}>Login</Link >
                 </button>
             </div>

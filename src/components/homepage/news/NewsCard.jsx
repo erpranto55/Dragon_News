@@ -64,8 +64,10 @@ const NewsCard = ({ news }) => {
                             </p>
                         </div>
 
-                        <Link href={`news/${news._id}`}>
-                            <button className='btn btn-primary bg-purple-500 border-0 '> See Details</button>
+                        <Link href={`/news/${news._id}`}>
+                            <button className='btn text-white bg-purple-500 mt-6 hover:bg-purple-700'>
+                                See Details
+                            </button>
                         </Link>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ const MainLayout = ({ children }) => {
             <Navbar />
             {children}
         </>
-    );
+    ); 
 };
 
 export default MainLayout;
