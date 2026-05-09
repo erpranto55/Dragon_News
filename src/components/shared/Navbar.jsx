@@ -6,6 +6,8 @@ import React from 'react';
 import userAvatar from '@/asset/user.png'
 import NavLink from './NavLink';
 import { authClient } from '@/lib/auth-client';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
 
@@ -20,7 +22,7 @@ const Navbar = () => {
 
     return (
         <div className='container mx-auto grid grid-cols-3 items-center my-3'>
-
+            <ToastContainer position="top-right" autoClose={3000} />
             {/* Left Side */}
             <div></div>
 
@@ -60,7 +62,16 @@ const Navbar = () => {
                         />
 
                         <button
-                            onClick={async () => await authClient.signOut()}
+                            onClick={async () => {
+
+                                await authClient.signOut();
+
+                                toast.success("Logout successful!");
+
+                                setTimeout(() => {
+                                    window.location.href = "/";
+                                }, 1000);
+                            }}
                             className='btn text-white bg-red-500 hover:bg-red-700'
                         >
                             Logout
