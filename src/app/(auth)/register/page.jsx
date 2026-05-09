@@ -16,6 +16,7 @@ import { authClient } from "@/lib/auth-client";
 // ADD THESE
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
 
@@ -24,6 +25,7 @@ const RegisterPage = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const router = useRouter();
 
     const handleRegisterFunc = async (data) => {
 
@@ -36,6 +38,15 @@ const RegisterPage = () => {
             image: photoURL,
             callbackURL: "/",
         });
+
+        // SUCCESS TOAST
+        if (res) {
+            toast.success("Registration successful!");
+
+            setTimeout(() => {
+                router.push("/");
+            }, 1500);
+        }
 
         // ERROR TOAST
         if (error) {
@@ -51,11 +62,6 @@ const RegisterPage = () => {
             }
 
             return;
-        }
-
-        // SUCCESS TOAST
-        if (res) {
-            toast.success("Registration successful!");
         }
     };
 
