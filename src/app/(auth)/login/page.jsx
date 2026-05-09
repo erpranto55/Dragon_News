@@ -111,10 +111,10 @@ const LoginPage = () => {
 
                         <InputGroup>
                             <InputGroup.Input
-                                className="w-full "
+                                className="w-full"
                                 placeholder="Your Password"
                                 type={isShowPassword ? "text" : "password"}
-                                // value={isShowPassword ? "87$2h.3diua" : "••••••••"}
+                                {...register("password")}
                             />
                             <InputGroup.Suffix className="pr-0">
                                 <Button
