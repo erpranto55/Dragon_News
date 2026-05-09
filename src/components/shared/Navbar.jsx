@@ -22,7 +22,7 @@ const Navbar = () => {
 
     return (
         <div className='container mx-auto grid grid-cols-3 items-center my-3'>
-            <ToastContainer position="top-right" autoClose={3000} />
+
             {/* Left Side */}
             <div></div>
 
@@ -64,13 +64,15 @@ const Navbar = () => {
                         <button
                             onClick={async () => {
 
-                                await authClient.signOut();
-
                                 toast.success("Logout successful!");
 
-                                setTimeout(() => {
+                                setTimeout(async () => {
+
+                                    await authClient.signOut();
+
                                     window.location.href = "/";
-                                }, 1000);
+
+                                }, 1200);
                             }}
                             className='btn text-white bg-red-500 hover:bg-red-700'
                         >

@@ -51,9 +51,6 @@ const RightSidebar = () => {
 
     return (
         <div>
-
-            <ToastContainer position="top-right" autoClose={3000} />
-
             <h2 className='font-bold text-xl mb-4'>
                 Login With
             </h2>
