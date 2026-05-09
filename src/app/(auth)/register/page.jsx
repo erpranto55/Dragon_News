@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     FieldError,
@@ -21,6 +21,9 @@ import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
+
+    const [isShowPassword, setIsShowPassword] = useState(false);
+
 
     const {
         register,
