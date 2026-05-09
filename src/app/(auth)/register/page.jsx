@@ -3,7 +3,6 @@
 import React from "react";
 import {
     Button,
-    Description,
     FieldError,
     Form,
     Input,
@@ -12,24 +11,60 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { authClient } from "@/lib/auth-client";
 
+// ADD THESE
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
 
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
-    } = useForm()
+    } = useForm();
 
     const handleRegisterFunc = async (data) => {
-        console.log(data)
+
+        const { name, email, password, photoURL } = data;
+
+        const { data: res, error } = await authClient.signUp.email({
+            name,
+            email,
+            password,
+            image: photoURL,
+            callbackURL: "/",
+        });
+
+        // ERROR TOAST
+        if (error) {
+
+            // if user already exists
+            if (
+                error.message?.toLowerCase().includes("user already exists") ||
+                error.message?.toLowerCase().includes("already exists")
+            ) {
+                toast.error("User already exists!");
+            } else {
+                toast.error(error.message || "Registration failed");
+            }
+
+            return;
+        }
+
+        // SUCCESS TOAST
+        if (res) {
+            toast.success("Registration successful!");
+        }
     };
-    // console.log(watch("email"));
 
     return (
         <div className="container mx-auto min-h-screen flex items-center justify-center px-4">
+
+            {/* TOAST CONTAINER */}
+            <ToastContainer position="top-right" autoClose={3000} />
+
             <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl min-h-[60vh]">
 
                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
@@ -38,66 +73,36 @@ const RegisterPage = () => {
 
                 <hr className="text-slate-300 my-6" />
 
-                <Form className="flex flex-col gap-5" onSubmit={handleSubmit(handleRegisterFunc)}>
+                <Form
+                    className="flex flex-col gap-5"
+                    onSubmit={handleSubmit(handleRegisterFunc)}
+                >
 
-                    {/* Name Field */}
-                    <TextField
-                        isRequired
-                        name="name"
-                        validate={(value) => {
-                            if (value.length === 0) {
-                                return "Name field is Required";
-                            }
-                            if (value.length < 3) {
-                                return "Name must be at least 3 characters";
-                            }
-                            return null;
-                        }}
-                    >
+                    <TextField isRequired>
                         <Label>Name</Label>
+
                         <Input
                             placeholder="Your Name"
                             className="mt-1"
                             {...register("name")}
                         />
+
                         <FieldError />
                     </TextField>
 
-                    {/* Photo URL Field */}
-                    <TextField
-                        isRequired
-                        name="name"
-                        validate={(value) => {
-                            if (value.length === 0) {
-                                return "Photo URL is Required";
-                            }
-                            return null;
-                        }}
-                    >
+                    <TextField isRequired>
                         <Label>Photo URL</Label>
+
                         <Input
                             placeholder="Photo URL"
                             className="mt-1"
                             {...register("photoURL")}
                         />
+
                         <FieldError />
                     </TextField>
 
-                    {/* Email Field */}
-                    <TextField
-                        isRequired
-                        name="email"
-                        type="email"
-                        validate={(value) => {
-                            if (
-                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
-                            ) {
-                                return "Please enter a valid email address";
-                            }
-
-                            return null;
-                        }}
-                    >
+                    <TextField isRequired type="email">
                         <Label>Email address</Label>
 
                         <Input
@@ -109,32 +114,7 @@ const RegisterPage = () => {
                         <FieldError />
                     </TextField>
 
-                    {/* Password Field */}
-                    <TextField
-                        isRequired
-                        minLength={8}
-                        name="password"
-                        type="password"
-                        validate={(value) => {
-
-                            if (value.length === 0) {
-                                return "Password field is Required";
-                            }
-                            if (value.length < 8) {
-                                return "Password must be at least 8 characters";
-                            }
-
-                            if (!/[A-Z]/.test(value)) {
-                                return "Password must contain at least one uppercase letter";
-                            }
-
-                            if (!/[0-9]/.test(value)) {
-                                return "Password must contain at least one number";
-                            }
-
-                            return null;
-                        }}
-                    >
+                    <TextField isRequired type="password">
                         <Label>Password</Label>
 
                         <Input
@@ -143,36 +123,32 @@ const RegisterPage = () => {
                             {...register("password")}
                         />
 
-                        {/* <Description>
-                            Must be at least 8 characters with 1 uppercase and 1 number
-                        </Description> */}
-
                         <FieldError />
                     </TextField>
 
-                    {/* Buttons */}
                     <div className="flex gap-3 pt-2">
-
                         <Button
                             type="submit"
                             className="w-full bg-purple-500 text-white hover:bg-purple-600 transition-all duration-300"
                         >
                             Register
                         </Button>
-
-
                     </div>
                 </Form>
+
                 <div className="flex gap-2 items-center justify-center mt-5">
-                    <h2 className="text-sm text-slate-700">Already Have An Account ? </h2>
+                    <h2 className="text-sm text-slate-700">
+                        Already Have An Account ?
+                    </h2>
+
                     <Link href="/login">
                         <h2 className="text-purple-500 font-bold">
                             Login
-                        </h2 >
-                    </Link >
+                        </h2>
+                    </Link>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

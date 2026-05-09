@@ -2,7 +2,12 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
-const client = new MongoClient(process.env.MONGO_URI);
+import dns from "node:dns/promises";
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
+
+const client = new MongoClient(process.env.AUTH_DB_URI);
+
+await client.connect();
 const db = client.db("Dragon-news");
 
 export const auth = betterAuth({
