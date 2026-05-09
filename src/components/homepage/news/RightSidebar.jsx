@@ -10,15 +10,6 @@ const RightSidebar = () => {
 
     const { data: session } = authClient.useSession();
 
-    // SUCCESS TOAST AFTER LOGIN
-    useEffect(() => {
-
-        if (session?.user) {
-            toast.success("Login successful!");
-        }
-
-    }, [session]);
-
     const handleGoogleSignIn = async () => {
 
         try {
