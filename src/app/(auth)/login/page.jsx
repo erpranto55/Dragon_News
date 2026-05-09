@@ -52,40 +52,15 @@ const LoginPage = () => {
         }
 
         // ERROR
-        // ERROR
         if (error) {
 
-            const errorMessage = error.message?.toLowerCase();
-
-            // user not found
             if (
-                errorMessage.includes("user not found") ||
-                errorMessage.includes("does not exist") ||
-                errorMessage.includes("not found")
+                error.message?.toLowerCase().includes("invalid") ||
+                error.message?.toLowerCase().includes("credential")
             ) {
-                toast.error("User does not exist!");
-            }
-
-            // wrong password
-            else if (
-                errorMessage.includes("invalid password") ||
-                errorMessage.includes("wrong password") ||
-                errorMessage.includes("invalid credential") ||
-                errorMessage.includes("credential")
-            ) {
-                toast.error("Password is incorrect!");
-            }
-
-            // invalid email
-            else if (
-                errorMessage.includes("invalid email")
-            ) {
-                toast.error("Invalid email!");
-            }
-
-            // fallback
-            else {
-                toast.error(error.message || "Login failed!");
+                toast.error("Invalid email or password!");
+            } else {
+                toast.error(error.message || "Login failed");
             }
 
             return;
@@ -96,7 +71,6 @@ const LoginPage = () => {
     return (
         <div className="container mx-auto min-h-screen flex items-center justify-center px-4">
             <ToastContainer position="top-right" autoClose={3000} />
-
             <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl min-h-[60vh]">
 
                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
