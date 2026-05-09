@@ -1,12 +1,23 @@
 "use client";
 
 import { authClient } from '@/lib/auth-client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RightSidebar = () => {
+
+    const { data: session } = authClient.useSession();
+
+    // SUCCESS TOAST AFTER LOGIN
+    useEffect(() => {
+
+        if (session?.user) {
+            toast.success("Login successful!");
+        }
+
+    }, [session]);
 
     const handleGoogleSignIn = async () => {
 
@@ -14,9 +25,8 @@ const RightSidebar = () => {
 
             await authClient.signIn.social({
                 provider: "google",
+                callbackURL: "/",
             });
-
-            toast.success("Google login successful!");
 
         } catch (error) {
 
@@ -29,10 +39,9 @@ const RightSidebar = () => {
         try {
 
             await authClient.signIn.social({
-                provider: "github"
+                provider: "github",
+                callbackURL: "/",
             });
-
-            toast.success("GitHub login successful!");
 
         } catch (error) {
 
@@ -40,24 +49,31 @@ const RightSidebar = () => {
         }
     };
 
-
-
     return (
         <div>
+
             <ToastContainer position="top-right" autoClose={3000} />
-            <h2 className='font-bold text-xl mb-4'>Login With</h2>
+
+            <h2 className='font-bold text-xl mb-4'>
+                Login With
+            </h2>
+
             <div className='flex flex-col gap-2 '>
+
                 <button
                     className='btn text-blue-500 border border-blue-500 font-bold'
-                    onClick={handleGoogleSignIn}>
+                    onClick={handleGoogleSignIn}
+                >
                     <FaGoogle /> Login with Google
                 </button>
 
                 <button
                     className='btn'
-                    onClick={handleGitHubSignIn}>
+                    onClick={handleGitHubSignIn}
+                >
                     <FaGithub /> Login with Github
                 </button>
+
             </div>
         </div>
     );
