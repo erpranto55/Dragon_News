@@ -1,18 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     Description,
     FieldError,
     Form,
     Input,
+    InputGroup,
     Label,
     TextField,
 } from "@heroui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { authClient } from "@/lib/auth-client";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const LoginPage = () => {
@@ -23,6 +25,8 @@ const LoginPage = () => {
         watch,
         formState: { errors },
     } = useForm()
+
+    const [isShowPassword, setIsShowPassword] = useState(false);
 
     const handleLogInFunc = async (data) => {
         console.log(data)
@@ -82,7 +86,7 @@ const LoginPage = () => {
                         isRequired
                         minLength={8}
                         name="password"
-                        type="password"
+                        type={isShowPassword ? "text" : "password"}
                         validate={(value) => {
 
                             if (value.length === 0) {
@@ -105,11 +109,25 @@ const LoginPage = () => {
                     >
                         <Label>Password</Label>
 
-                        <Input
-                            placeholder="Enter your password"
-                            className="mt-1"
-                            {...register("password")}
-                        />
+                        <InputGroup>
+                            <InputGroup.Input
+                                className="w-full "
+                                placeholder="Your Password"
+                                type={isShowPassword ? "text" : "password"}
+                                // value={isShowPassword ? "87$2h.3diua" : "••••••••"}
+                            />
+                            <InputGroup.Suffix className="pr-0">
+                                <Button
+                                    isIconOnly
+                                    aria-label={isShowPassword ? "Hide password" : "Show password"}
+                                    size="sm"
+                                    variant="ghost"
+                                    onPress={() => setIsShowPassword(!isShowPassword)}
+                                >
+                                    {isShowPassword ? <FaEye className="size-4" /> : <FaEyeSlash className="size-4" />}
+                                </Button>
+                            </InputGroup.Suffix>
+                        </InputGroup>
 
                         <FieldError />
                     </TextField>

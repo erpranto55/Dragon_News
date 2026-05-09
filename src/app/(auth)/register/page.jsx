@@ -6,6 +6,7 @@ import {
     FieldError,
     Form,
     Input,
+    InputGroup,
     Label,
     TextField,
 } from "@heroui/react";
@@ -17,6 +18,7 @@ import { authClient } from "@/lib/auth-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
 
@@ -123,11 +125,25 @@ const RegisterPage = () => {
                     <TextField isRequired type="password">
                         <Label>Password</Label>
 
-                        <Input
-                            placeholder="Enter your password"
-                            className="mt-1"
-                            {...register("password")}
-                        />
+                        <InputGroup>
+                            <InputGroup.Input
+                                className="w-full "
+                                placeholder="Your Password"
+                                type={isShowPassword ? "text" : "password"}
+                            // value={isShowPassword ? "87$2h.3diua" : "••••••••"}
+                            />
+                            <InputGroup.Suffix className="pr-0">
+                                <Button
+                                    isIconOnly
+                                    aria-label={isShowPassword ? "Hide password" : "Show password"}
+                                    size="sm"
+                                    variant="ghost"
+                                    onPress={() => setIsShowPassword(!isShowPassword)}
+                                >
+                                    {isShowPassword ? <FaEye className="size-4" /> : <FaEyeSlash className="size-4" />}
+                                </Button>
+                            </InputGroup.Suffix>
+                        </InputGroup>
 
                         <FieldError />
                     </TextField>
