@@ -15,10 +15,13 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { authClient } from "@/lib/auth-client";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
 
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -29,22 +32,46 @@ const LoginPage = () => {
     const [isShowPassword, setIsShowPassword] = useState(false);
 
     const handleLogInFunc = async (data) => {
-        console.log(data)
+
         const { email, password } = data;
 
         const { data: res, error } = await authClient.signIn.email({
-            email: email,
-            password: password,
+            email,
+            password,
             rememberMe: true,
             callbackURL: "/",
         });
 
-        console.log(res, error);
+        // SUCCESS
+        if (res) {
+            toast.success("Login successful!");
+
+            setTimeout(() => {
+                router.push("/");
+            }, 1500);
+        }
+
+        // ERROR
+        if (error) {
+
+            if (
+                error.message?.toLowerCase().includes("invalid") ||
+                error.message?.toLowerCase().includes("credential")
+            ) {
+                toast.error("Invalid email or password!");
+            } else {
+                toast.error(error.message || "Login failed");
+            }
+
+            return;
+        }
     };
     // console.log(watch("email"));
 
     return (
         <div className="container mx-auto min-h-screen flex items-center justify-center px-4">
+            <ToastContainer position="top-right" autoClose={3000} />
+            
             <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl min-h-[60vh]">
 
                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
