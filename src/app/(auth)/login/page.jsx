@@ -12,6 +12,7 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { authClient } from "@/lib/auth-client";
 
 
 const LoginPage = () => {
@@ -25,6 +26,16 @@ const LoginPage = () => {
 
     const handleLogInFunc = async (data) => {
         console.log(data)
+        const { email, password } = data;
+
+        const { data: res, error } = await authClient.signIn.email({
+            email: email,
+            password: password,
+            rememberMe: true,
+            callbackURL: "/",
+        });
+
+        console.log(res, error);
     };
     // console.log(watch("email"));
 
@@ -99,10 +110,6 @@ const LoginPage = () => {
                             className="mt-1"
                             {...register("password")}
                         />
-
-                        {/* <Description>
-                            Must be at least 8 characters with 1 uppercase and 1 number
-                        </Description> */}
 
                         <FieldError />
                     </TextField>
